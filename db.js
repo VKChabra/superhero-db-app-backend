@@ -1,12 +1,17 @@
 const mongoose = require("mongoose");
+require("dotenv").config();
 
-mongoose.connect("mongodb://localhost:3001/superhero-database", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+const { DB_HOST } = process.env;
 
-const db = mongoose.connection;
-db.on("error", console.error.bind(console, "MongoDB connection error:"));
-db.once("open", function () {
-  console.log("Connected to MongoDB");
-});
+mongoose
+  .connect(DB_HOST, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => {
+    console.log("Database connection successful");
+  })
+  .catch(error => {
+    console.log(error.message);
+    process.exit(1);
+  });
