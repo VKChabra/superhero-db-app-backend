@@ -7,8 +7,10 @@ const uploadImage = async image => {
   try {
     const fileName = image.originalname;
     const [name, extension] = fileName.split(".");
-    const isImage = ["png", "jpg", "jpeg"].includes(extension.toLowerCase());
-    if (!isImage) return new Error(400, "not an image");
+    const isImage = ["png", "jpg", "jpeg", "webp"].includes(
+      extension.toLowerCase()
+    );
+    if (!isImage) return new Error(`Not an image, ${error.message}`);
     const uniqueName = `${name}_${Date.now()}.${extension}`;
     const imgPath = "/" + uniqueName;
     const response = await dbx.filesUpload({
@@ -21,7 +23,7 @@ const uploadImage = async image => {
     const link = createLink.result.url;
     return link;
   } catch (error) {
-    return new Error(error);
+    return error;
   }
 };
 
