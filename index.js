@@ -1,4 +1,5 @@
 const express = require("express");
+const logger = require("morgan");
 const bodyParser = require("body-parser");
 
 require("dotenv").config();
@@ -10,6 +11,9 @@ const app = express();
 const PORT = 3001;
 
 app.use(bodyParser.json());
+
+const formatsLogger = app.get("env") === "development" ? "dev" : "short";
+app.use(logger(formatsLogger));
 
 app.use("/superheroes", superheroesRouter);
 
