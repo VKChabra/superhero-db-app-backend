@@ -23,16 +23,6 @@ const superheroSchema = new mongoose.Schema({
   },
   images: {
     type: [String],
-    validate: {
-      validator: function (value) {
-        return value.every(url => {
-          const urlRegex =
-            /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/;
-          return urlRegex.test(url);
-        });
-      },
-      message: props => `${props.value} is not a valid URL`,
-    },
   },
 });
 

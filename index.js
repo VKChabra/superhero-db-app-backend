@@ -1,6 +1,7 @@
 const express = require("express");
 const logger = require("morgan");
 const cors = require("cors");
+const path = require("path");
 const bodyParser = require("body-parser");
 
 require("dotenv").config();
@@ -18,6 +19,7 @@ app.use(bodyParser.json());
 const formatsLogger = app.get("env") === "development" ? "dev" : "short";
 app.use(logger(formatsLogger));
 
+app.use(express.static(path.join(__dirname, "/uploads")));
 app.use("/superheroes", superheroesRouter);
 
 app.use((err, req, res, next) => {

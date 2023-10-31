@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const multer = require("multer");
 const validateBody = require("../middlewares/validateBody");
 const superheroSchema = require("../schemas/superhero");
 const {
@@ -10,19 +9,15 @@ const {
   updateHero,
   removeHero,
 } = require("../controllers/superhero");
-const { uploadHeroImage } = require("../controllers/image");
+const upload = require("../middlewares/upload");
 
-const upload = multer();
-
-router.post("/", validateBody(superheroSchema), newHero);
-
-router.post("/upload", upload.single("image"), uploadHeroImage);
+router.post("/", upload, validateBody(superheroSchema), newHero);
 
 router.get("/", listHeroes);
 
 router.get("/:id", getHero);
 
-router.put("/:id", validateBody(superheroSchema), updateHero);
+router.put("/:id", upload, validateBody(superheroSchema), updateHero);
 
 router.delete("/:id", removeHero);
 
