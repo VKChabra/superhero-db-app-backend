@@ -1,7 +1,7 @@
 const Superhero = require("../models/superhero");
 const ctrlWrapper = require("../helpers/ctrlWrapper");
 
-const newHero = async (req, res) => {
+const newHero = async (req, res, next) => {
   const fileLinks = req.files.map(file => `/${file.filename}`);
   const superhero = new Superhero({
     ...req.body,
@@ -12,7 +12,7 @@ const newHero = async (req, res) => {
   res.status(201).json(superhero);
 };
 
-const listHeroes = async (req, res) => {
+const listHeroes = async (req, res, next) => {
   const page = req.query.page || 1;
   const perPage = 5;
   const superheroes = await Superhero.find()
@@ -26,7 +26,7 @@ const listHeroes = async (req, res) => {
   });
 };
 
-const getHero = async (req, res) => {
+const getHero = async (req, res, next) => {
   const superhero = await Superhero.findById(req.params.id);
   if (!superhero) {
     return res.status(404).json({ error: "Superhero not found" });
@@ -34,7 +34,7 @@ const getHero = async (req, res) => {
   res.json(superhero);
 };
 
-const updateHero = async (req, res) => {
+const updateHero = async (req, res, next) => {
   const oldFileLinks = req.body.images;
   const newFileLinks = req.files.map(file => `/${file.filename}`);
   let images;
@@ -61,7 +61,7 @@ const updateHero = async (req, res) => {
   res.status(200).json(superhero);
 };
 
-const removeHero = async (req, res) => {
+const removeHero = async (req, res, next) => {
   const superhero = await Superhero.findByIdAndDelete(req.params.id);
   if (!superhero) {
     return res.status(404).json({ error: "Superhero not found" });
